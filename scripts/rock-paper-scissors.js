@@ -1,3 +1,5 @@
+// Function to select a random option for the computer
+
 function computerPlay() {
     let options = ['rock', 'paper', 'scissors'];
 
@@ -6,6 +8,18 @@ function computerPlay() {
 
     return selection;
 }
+
+// Function that generates a message with the result of the round
+
+function displayResult(playerPlay, computerPlay, result) {
+    if (result) {
+        return `Congratulations you win, ${playerPlay} beats ${computerPlay}!`;
+    } else {
+        return `You lose pal, ${computerPlay} beats ${playerPlay}!`;
+    }
+}
+
+// Plays a round of rock, paper, scissors based on the selection of the player and the selection of the computer
 
 function playRound(playerPlay, computerPlay) {
     playerPlay = playerPlay.toLowerCase();
@@ -41,13 +55,15 @@ function playRound(playerPlay, computerPlay) {
     }
 }
 
-function displayResult(playerPlay, computerPlay, result) {
-    if (result) {
-        return `Congratulations you win, ${playerPlay} beats ${computerPlay}!`;
-    } else {
-        return `You lose pal, ${computerPlay} beats ${playerPlay}!`;
-    }
+// Define function when a button is clicked
+function clickedOption(e) {
+    playRound(e.target.id, computerPlay());
 }
+
+// Adding listeners to buttons
+const options = document.querySelectorAll('button.option');
+
+options.forEach(button => button.addEventListener('click', clickedOption));
 
 function game(rounds = 5) {
     let playerScore = 0;
@@ -75,5 +91,3 @@ function game(rounds = 5) {
     Player Score: ${playerScore} \
     Ties: ${ties}`);
 }
-
-game();
