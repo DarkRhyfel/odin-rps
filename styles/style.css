@@ -3,8 +3,10 @@ body {
     font-family: 'Courier New', Courier, monospace;
 }
 
-h1 {
+h1,
+h3 {
     color: white;
+    text-align: center;
 }
 
 .container,
@@ -31,6 +33,23 @@ h1 {
 }
 
 .results {
+    margin: 50px 0;
     justify-content: space-between;
     align-items: center;
+    gap: 200px;
+}
+
+.rounds,
+.scores {
+    flex: 1 0 auto;
+    min-width: 400px;
+}
+
+.rounds {
+    align-self: flex-start;
+}
+
+.round,
+.score {
+    color: white;
 }

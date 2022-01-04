@@ -1,3 +1,18 @@
+// Setting initial values
+const roundsSection = document.querySelector('.rounds');
+
+const playerScoreElement = document.querySelector('#player-score');
+const computerScoreElement = document.querySelector('#computer-score');
+const tiesElement = document.querySelector('#ties');
+
+let playerScore = 0;
+let computerScore = 0;
+let ties = 0;
+
+playerScoreElement.textContent = `${playerScoreElement.textContent.split(':')[0]}: ${playerScore}`;
+computerScoreElement.textContent = `${computerScoreElement.textContent.split(':')[0]}: ${computerScore}`;
+tiesElement.textContent = `${tiesElement.textContent.split(':')[0]}: ${ties}`;
+
 // Function to select a random option for the computer
 
 function computerPlay() {
@@ -13,10 +28,26 @@ function computerPlay() {
 
 function displayResult(playerPlay, computerPlay, result) {
     if (result) {
-        return `Congratulations you win, ${playerPlay} beats ${computerPlay}!`;
+        addRoundResult(`Congratulations you win, ${playerPlay} beats ${computerPlay}!`);
+
+        playerScore += 1;
+        playerScoreElement.textContent = `${playerScoreElement.textContent.split(':')[0]}: ${playerScore}`;
     } else {
-        return `You lose pal, ${computerPlay} beats ${playerPlay}!`;
+        addRoundResult(`You lose pal, ${computerPlay} beats ${playerPlay}!`);
+
+        computerScore += 1;
+        computerScoreElement.textContent = `${computerScoreElement.textContent.split(':')[0]}: ${computerScore}`;
     }
+}
+
+// Function to add a new round result
+
+function addRoundResult(message) {
+    const result = document.createElement('p');
+    result.classList.add('round');
+    result.textContent = message;
+
+    roundsSection.appendChild(result);
 }
 
 // Plays a round of rock, paper, scissors based on the selection of the player and the selection of the computer
@@ -25,32 +56,23 @@ function playRound(playerPlay, computerPlay) {
     playerPlay = playerPlay.toLowerCase();
 
     if (playerPlay === computerPlay) {
-        return {
-            result: 2,
-            message: 'It\'s a tie!'
-        };
+        addRoundResult('It\'s a tie!');
+
+        ties += 1;
+        tiesElement.textContent = `${tiesElement.textContent.split(':')[0]}: ${ties}`;
     } else {
         switch (playerPlay) {
             case 'paper':
-                return {
-                    result: Number(computerPlay === 'rock'),
-                    message: displayResult(playerPlay, computerPlay, computerPlay === 'rock')
-                };
+                displayResult(playerPlay, computerPlay, computerPlay === 'rock');
+                break;
             case 'rock':
-                return {
-                    result: Number(computerPlay === 'scissors'),
-                    message: displayResult(playerPlay, computerPlay, computerPlay === 'scissors')
-                };
+                displayResult(playerPlay, computerPlay, computerPlay === 'scissors');
+                break;
             case 'scissors':
-                return {
-                    result: Number(computerPlay === 'paper'),
-                    message: displayResult(playerPlay, computerPlay, computerPlay === 'paper')
-                };
+                displayResult(playerPlay, computerPlay, computerPlay === 'paper');
+                break;
             default:
-                return {
-                    result: -1,
-                    message: 'Your input is not valid, use rock, paper or scissors'
-                };
+                console.log('Your input is not valid, use rock, paper or scissors');
         }
     }
 }
