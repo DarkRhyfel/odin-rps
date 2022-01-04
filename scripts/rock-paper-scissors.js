@@ -1,4 +1,6 @@
 // Setting initial values
+const container = document.querySelector('.container');
+
 const roundsSection = document.querySelector('.rounds');
 
 const playerScoreElement = document.querySelector('#player-score');
@@ -12,6 +14,11 @@ let ties = 0;
 playerScoreElement.textContent = `${playerScoreElement.textContent.split(':')[0]}: ${playerScore}`;
 computerScoreElement.textContent = `${computerScoreElement.textContent.split(':')[0]}: ${computerScore}`;
 tiesElement.textContent = `${tiesElement.textContent.split(':')[0]}: ${ties}`;
+
+// Adding listeners to buttons
+const options = document.querySelectorAll('button.option');
+
+options.forEach(button => button.addEventListener('click', clickedOption));
 
 // Function to select a random option for the computer
 
@@ -50,6 +57,15 @@ function addRoundResult(message) {
     roundsSection.appendChild(result);
 }
 
+// Function to add winner header
+
+function addWinnerHeader(element, message) {
+    element.textContent = message;
+    container.insertBefore(element, options[0]);
+
+    options.forEach(button => button.removeEventListener('click', clickedOption));
+}
+
 // Plays a round of rock, paper, scissors based on the selection of the player and the selection of the computer
 
 function playRound(playerPlay, computerPlay) {
@@ -75,41 +91,17 @@ function playRound(playerPlay, computerPlay) {
                 console.log('Your input is not valid, use rock, paper or scissors');
         }
     }
+
+    const winnerHeader = document.createElement('h2');
+
+    if (playerScore === 5) {
+        addWinnerHeader(winnerHeader, 'Congratulations, you are the winner ;)!');
+    } else if (computerScore === 5) {
+        addWinnerHeader(winnerHeader, 'Sorry pal, you were beaten by the computer :/!');
+    }
 }
 
 // Define function when a button is clicked
 function clickedOption(e) {
     playRound(e.target.id, computerPlay());
-}
-
-// Adding listeners to buttons
-const options = document.querySelectorAll('button.option');
-
-options.forEach(button => button.addEventListener('click', clickedOption));
-
-function game(rounds = 5) {
-    let playerScore = 0;
-    let computerScore = 0;
-    let ties = 0;
-
-    for (i = 1; i <= rounds; i++) {
-        let playerPlay = prompt('Enter your selection to play!', 'paper');
-
-        let round = playRound(playerPlay, computerPlay());
-
-        console.log(round.message);
-
-        if (round.result === 2) {
-            ties += 1;
-        } else if (round.result === 1) {
-            playerScore += 1;
-        } else if (round.result === 0) {
-            computerScore += 1;
-        }
-    }
-
-    console.log(`Final Scores \
-    Computer Score: ${computerScore} \
-    Player Score: ${playerScore} \
-    Ties: ${ties}`);
 }
